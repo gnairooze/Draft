@@ -15,6 +15,8 @@ namespace DemoAuth.WWW.Controllers
             ViewBag.UserName = User.Identity.Name;
             ViewBag.UserIsAuthenticated = User.Identity.IsAuthenticated;
             ViewBag.UserAuthType = User.Identity.AuthenticationType;
+            ViewBag.AuthenticationType = Helper.Config.AuthenticationType;
+            ViewBag.Impersonate = Helper.Config.Impersonate;
 
             return View();
         }
