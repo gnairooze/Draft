@@ -11,7 +11,18 @@ $vms = @(
 )
 # input end
 
-Set-AzContext -SubscriptionId $subscriptionId
+$currentSubscriptionId = (Get-AzContext | Select Subscription).Subscription
+
+if ($currentSubscriptionId -like $subscriptionId)
+{
+	Write-Host "use current subscription $currentSubscriptionId"
+}
+else
+{
+	Write-Host "Change subscription from $currentSubscriptionId to $subscriptionId"
+	
+	Set-AzContext -SubscriptionId $subscriptionId
+}
 
 Write-Host "before"
 Get-AzVM -Status | Select-Object Name, ResourceGroupName, Location, PowerState | Format-Table -AutoSize -Wrap
