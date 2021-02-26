@@ -13,59 +13,27 @@ namespace Dice.Exec
             Console.Read();
         }
 
-        static int GetDiceMaxNumber()
-        {
-            int maxNumber = 0;
-            bool succeeded = false;
-
-            do
-            {
-                Console.WriteLine("What is your dice max number? (example 8)");
-                string result = Console.ReadLine();
-
-                succeeded = int.TryParse(result, out maxNumber);
-
-                if (succeeded)
-                {
-                    return maxNumber;
-                }
-            } while (!succeeded);
-
-            return 0;
-        }
-
-        private static bool RollAgain()
-        {
-            Console.WriteLine("Roll Again? ([Y]es, [N]o)");
-            var result = Console.ReadKey();
-
-            if (result.Key == ConsoleKey.N)
-            {
-                return false;
-            }
-
-            if (result.Key == ConsoleKey.Enter)
-            {
-                Console.WriteLine("Y");
-            }
-
-            return true;
-        }
-
         private static void Start()
         {
+            ScreenManager.ClearScreen();
+            ScreenManager.SetColors();
+
             var business = new Dice.Business.Manager();
 
-            business.MaxNumber = GetDiceMaxNumber();
+            business.MaxNumber = ScreenManager.GetDiceMaxNumber();
+            business.RollCount = ScreenManager.GetRollCount();
 
-            int rolledNumber = business.Roll();
-            Console.WriteLine($"Rolled {rolledNumber}");
+            int[] rolledNumbers = business.Roll();
+            ScreenManager.Rolled(1, rolledNumbers);
 
-            while (RollAgain())
+            int trial = 2;
+
+            while (ScreenManager.RollAgain())
             {
-                rolledNumber = business.Roll();
-                Console.WriteLine($"Rolled {rolledNumber}");
+                ScreenManager.ClearScreen();
 
+                rolledNumbers = business.Roll();
+                ScreenManager.Rolled(trial++, rolledNumbers);
             }
         }
 
