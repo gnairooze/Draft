@@ -23,17 +23,37 @@ namespace Dice.Exec
             business.MaxNumber = ScreenManager.GetDiceMaxNumber();
             business.RollCount = ScreenManager.GetRollCount();
 
-            int[] rolledNumbers = business.Roll();
-            ScreenManager.Rolled(1, rolledNumbers);
+            int playersCount = ScreenManager.GetPlayersCount();
 
-            int trial = 2;
+            int[] rolledNumbers = business.Roll();
+
+            int trial = 1;
+
+            int playerNumber = trial % playersCount;
+            if (playerNumber == 0)
+            {
+                playerNumber = playersCount;
+            }
+
+            ScreenManager.Rolled(trial, $"player {playerNumber}", rolledNumbers);
+
+            trial++;
 
             while (ScreenManager.RollAgain())
             {
                 ScreenManager.ClearScreen();
 
                 rolledNumbers = business.Roll();
-                ScreenManager.Rolled(trial++, rolledNumbers);
+
+                playerNumber = trial % playersCount;
+                if(playerNumber == 0)
+                {
+                    playerNumber = playersCount;
+                }
+
+                ScreenManager.Rolled(trial, $"player {playerNumber}", rolledNumbers);
+
+                trial++;
             }
         }
 

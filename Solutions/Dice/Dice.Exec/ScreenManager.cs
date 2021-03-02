@@ -13,7 +13,7 @@ namespace Dice.Exec
 
             do
             {
-                Console.WriteLine("What is your dice max number? (example 8)");
+                Console.WriteLine("What is your dice max number? (example 6)");
                 string result = Console.ReadLine();
 
                 succeeded = int.TryParse(result, out maxNumber);
@@ -21,6 +21,32 @@ namespace Dice.Exec
                 if (succeeded)
                 {
                     return maxNumber;
+                }
+            } while (!succeeded);
+
+            return 0;
+        }
+
+        internal static int GetPlayersCount()
+        {
+            int playersCount = 0;
+            bool succeeded = false;
+
+            do
+            {
+                Console.WriteLine("How many players? (example 2)");
+                string result = Console.ReadLine();
+
+                succeeded = int.TryParse(result, out playersCount);
+
+                if (playersCount <= 0)
+                {
+                    succeeded = false;
+                }
+                
+                if (succeeded)
+                {
+                    return playersCount;
                 }
             } while (!succeeded);
 
@@ -66,11 +92,11 @@ namespace Dice.Exec
             return true;
         }
 
-        internal static void Rolled(int trial, int[] rolledNumbers)
+        internal static void Rolled(int trial, string prefix, int[] rolledNumbers)
         {
             Console.WriteLine();
             Console.WriteLine("*********************");
-            Console.WriteLine($"* {trial} - Rolled {string.Join(", ", rolledNumbers)} *");
+            Console.WriteLine($"* {trial} - {prefix} - Rolled {string.Join(", ", rolledNumbers)} *");
             Console.WriteLine("*********************");
         }
 
