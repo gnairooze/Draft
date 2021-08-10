@@ -20,11 +20,19 @@ $current_ips = (Get-NetFirewallRule -DisplayName "CUSTOM RDP BLOCK" | Get-NetFir
 #Takes each IP captured and adds it to log
 foreach ($ip in $getip)
 {
-    $date = (Get-Date).ToString()
-    # writing the IP blocking event to the log file
-    $date + ' ' + $ip.name + ' The IP address has been blocked due to ' + ($badRDPlogons | where {$_.IpAddress -eq $ip.name}).count + ' attempts for 1 hour'>> $log 
-
-	$current_ips += $ip.name
+    if ($current_ips -match $ip.name)
+    {
+       #skip
+    }
+    else
+    {
+        $date = (Get-Date).ToString()
+        # writing the IP blocking event to the log file
+        $date + ' ' + $ip.name + ' The IP address has been blocked due to ' + ($badRDPlogons | where {$_.IpAddress -eq $ip.name}).count + ' attempts for 1 hour'>> $log 
+        
+        $current_ips += $ip.name
+    }
+	
 }
 
 #Adds current ips to the CUSTOM RDP BLOCK rule
