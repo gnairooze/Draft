@@ -86,5 +86,29 @@ namespace CallAPI
             }
             
         }
+
+        public static async Task ProcessPost1()
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+            
+            var requestJson = @"{
+    ""userId"": 1025,
+    ""title"": ""testing post request - 2022062113120001"",
+    ""body"": ""details of the request of 2022062113120001""
+}";
+            
+            HttpContent httpContent = new StringContent(requestJson, Encoding.UTF8);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            var response = await client.PostAsync("https://jsonplaceholder.typicode.com/posts", httpContent);
+
+            Console.WriteLine($"IsSuccessStatusCode: {response.IsSuccessStatusCode}");
+            Console.WriteLine($"StatusCode: {response.StatusCode}");
+            Console.WriteLine($"RequestMessage: {response.RequestMessage?.Content?.ReadAsStringAsync().Result}");
+            Console.WriteLine($"Content: {response.Content.ReadAsStringAsync().Result}");
+
+        }
     }
 }
