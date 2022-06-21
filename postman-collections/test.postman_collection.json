@@ -138,6 +138,40 @@
 			"response": []
 		},
 		{
+			"name": "test-get-7-xml",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://restapi.adequateshop.com/api/Traveler?page=6",
+					"protocol": "http",
+					"host": [
+						"restapi",
+						"adequateshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"Traveler"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "test-post-1",
 			"request": {
 				"method": "POST",
