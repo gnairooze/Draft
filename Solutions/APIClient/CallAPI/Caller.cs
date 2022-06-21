@@ -45,5 +45,40 @@ namespace CallAPI
                 Console.WriteLine(repo.Name);
             }
         }
+
+        public static async Task<List<Repository>> ProcessRepositories3()
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+            var streamTask = client.GetStreamAsync("https://api.github.com/orgs/dotnet/repos");
+
+            var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+
+            if (repositories == null)
+            {
+                return new List<Repository>();
+            }
+
+            return repositories;
+        }
+
+        public static async Task ProcessRepositories4()
+        {
+            var repositories = await ProcessRepositories3();
+
+            if(repositories.Count == 0)
+            {
+                Console.WriteLine("no repos returned");
+                return;
+            }
+
+            foreach (var repo in repositories)
+            {
+                Console.WriteLine(repo.Name);
+            }
+                
+        }
     }
 }
