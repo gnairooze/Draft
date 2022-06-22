@@ -12,6 +12,10 @@ namespace CallAPI
     {
         private static readonly HttpClient client = new HttpClient();
 
+        static Caller()
+        {
+            client.Timeout = TimeSpan.FromMinutes(2);
+        }
         public static async Task ProcessRepositories()
         {
             client.DefaultRequestHeaders.Accept.Clear();
